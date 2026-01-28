@@ -8,6 +8,9 @@ StatusChoices = (
         ('simple', 'simple'),
     )
 
+# =========================
+#  USER
+# =========================
 class UserProfile(AbstractUser):
     phone_number = PhoneNumberField(null=True, blank=True)
     age = models.PositiveSmallIntegerField(
@@ -22,6 +25,9 @@ class UserProfile(AbstractUser):
         return f'{self.first_name} {self.last_name}'
 
 
+# =========================
+# Category
+# =========================
 class Category(models.Model):
     category_name = models.CharField(max_length=100, unique=True)
 
@@ -29,6 +35,9 @@ class Category(models.Model):
         return self.category_name
 
 
+# =========================
+# Genre
+# =========================
 class Genre(models.Model):
     genre_name = models.CharField(max_length=30)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='genres')
@@ -37,6 +46,9 @@ class Genre(models.Model):
         return f'{self.category},{self.genre_name}'
 
 
+# =========================
+# Country
+# =========================
 class Country(models.Model):
     country_name = models.CharField(max_length=40, unique=True)
 
@@ -44,6 +56,9 @@ class Country(models.Model):
         return self.country_name
 
 
+# =========================
+# Director
+# =========================
 class Director(models.Model):
     full_name = models.CharField(max_length=100, verbose_name='ФИО')
     director_photo = models.ImageField(upload_to='director_images')
@@ -54,6 +69,9 @@ class Director(models.Model):
         return self.full_name
 
 
+# =========================
+# Actor
+# =========================
 class Actor(models.Model):
     full_name = models.CharField(max_length=100, verbose_name='ФИО')
     actor_photo = models.ImageField(upload_to='actor_images')
@@ -64,6 +82,9 @@ class Actor(models.Model):
         return self.full_name
 
 
+# =========================
+# Movie
+# =========================
 class Movie(models.Model):
     movie_name = models.CharField(max_length=100)
     slogan = models.CharField(max_length=100, null=True, blank=True)
@@ -117,6 +138,9 @@ class MovieFrame(models.Model):
         return f'{self.movie},{self.image}'
 
 
+# =========================
+# Rating
+# =========================
 class Rating(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE,related_name='ratings')
@@ -148,6 +172,9 @@ class ReviewLike(models.Model):
         return f'{self.user},{self.like}'
 
 
+# =========================
+# Favorite
+# =========================
 class Favorite(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
 
@@ -163,6 +190,9 @@ class FavoriteItem(models.Model):
         return f'{self.favorite},{self.movie}'
 
 
+# =========================
+# History
+# =========================
 class History(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
